@@ -1,0 +1,13 @@
+{
+  "main": {
+    "temp": 22,
+    "humidity": 60
+  },
+  "weather": [
+    {
+      "description": "clear sky",
+      "icon": "01d"
+    }
+  ],
+  "name": "London"
+}

@@ -1,43 +1,38 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
-
-const API_KEY = "your_api_key_here"; // Replace with your actual API key
-const CITY = "London"; // Change this to test different cities
+import { Routes, Route } from "react-router-dom";
+import Footer from "./component/Footer";
+import HomePage from "./component/HomePage";
+import Header from "./component/Header";
+import WeatherDisplay from "./component/WeatherDisplay";
+import WelcomePage from "./component/Welcomepage"; 
+import AboutPage from "./pages/AboutPage";  
+import ContactPage from "./pages/ContactPage";
+import "./index.css";
 
 function App() {
-  const [weather, setWeather] = useState(null);
-  const [error, setError] = useState(null);
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
-    const fetchWeather = async () => {
-      try {
-        const response = await axios.get(
-          `https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=92d49189cb2b878e0610a8be7afa97da`
-        );
-        setWeather(response.data);
-      } catch (err) {
-        setError("Failed to fetch weather data");
-      }
-    };
-
-    fetchWeather();
-  }, []);
+    if (darkMode) {
+      document.body.classList.add("dark");
+    } else {
+      document.body.classList.remove("dark");
+    }
+  }, [darkMode]);
 
   return (
-    <div className="p-4">
-      <h1 className="text-2xl font-bold">Weather Data</h1>
-      {error && <p className="text-red-500">{error}</p>}
-      {weather ? (
-        <div className="mt-4">
-          <p>City: {weather.name}</p>
-          <p>Temperature: {weather.main.temp}°C</p>
-          <p>Humidity: {weather.main.humidity}%</p>
-          <p>Wind Speed: {weather.wind.speed} km/h</p>
-          <p>Condition: {weather.weather[0].description}</p>
-        </div>
-      ) : (
-        <p>Loading weather data...</p>
-      )}
+    <div className="flex flex-col min-h-screen bg-white text-black dark:bg-black dark:text-white transition-colors duration-300">
+      <Header darkMode={darkMode} setDarkMode={setDarkMode} />
+      <div className="flex-grow">
+        <Routes>
+          <Route path="/" element={<WelcomePage />} />
+          <Route path="/home" element={<HomePage />} />
+          <Route path="/weather/:city" element={<WeatherDisplay />} />
+          <Route path="/about" element={<AboutPage />} /> 
+          <Route path="/contact" element={<ContactPage />} />
+        </Routes>
+      </div>
+      <Footer />
     </div>
   );
 }
