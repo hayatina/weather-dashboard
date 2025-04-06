@@ -12,10 +12,13 @@ const Header = ({ darkMode, setDarkMode }) => {
         {/* Navigation + Toggle */}
         <nav className="flex items-center space-x-6">
           <Link to="/" className="hover:text-gray-300">
+            Welcome
+          </Link>
+          <Link to="/home" className="hover:text-gray-300">
             Home
           </Link>
           <Link to="/forecast" className="hover:text-gray-300">
-            Display Weather
+            forecast
           </Link>
           <Link to="/about" className="hover:text-gray-300">
             About

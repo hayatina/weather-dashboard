@@ -1,79 +1,78 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import WeatherDisplay from "./WeatherDisplay";
-
+import { useNavigate } from "react-router-dom";
 
 const HomePage = () => {
-  const [city, setCity] = useState("");
-  const [weather, setWeather] = useState(null);
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [recentSearches, setRecentSearches] = useState([]);
+  const [city, setCity] = useState(""); // For storing city input
+  const [currentWeather, setCurrentWeather] = useState(null); // For storing current weather
+  const [error, setError] = useState(""); // For error messages
+  const [loading, setLoading] = useState(false); // For loading state
+  const [isSearchedCity, setIsSearchedCity] = useState(false); // Flag to track if the weather is for searched city
 
-  const API_KEY = "92d49189cb2b878e0610a8be7afa97da"; // Replace with your key
+  const navigate = useNavigate(); // Navigation hook
+  const API_KEY = "92d49189cb2b878e0610a8be7afa97da"; // Your OpenWeather API Key
 
-  // Load recent searches from localStorage on mount
+  // Fetch current weather for user's location
   useEffect(() => {
-    const saved = JSON.parse(localStorage.getItem("recentSearches")) || [];
-    setRecentSearches(saved);
-  }, []);
-
-  // Save updated recent searches to localStorage
-  useEffect(() => {
-    localStorage.setItem("recentSearches", JSON.stringify(recentSearches));
-  }, [recentSearches]);
-
-  // Auto-fetch weather based on user location
-  useEffect(() => {
+    // Try to get the user's current location
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         const { latitude, longitude } = position.coords;
+        setLoading(true);
+
         try {
-          setLoading(true);
-          const response = await axios.get(
+          // Fetch current weather based on the geolocation
+          const currentWeatherResponse = await axios.get(
             `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&units=metric&appid=${API_KEY}`
           );
-          setWeather(response.data);
-          setCity(response.data.name);
+          setCurrentWeather(currentWeatherResponse.data);
+          setIsSearchedCity(false); // Set the flag to false as this is current location weather
         } catch (err) {
-          setError("Could not fetch weather from location.");
+          setError("Could not fetch weather for your location.");
+          setCurrentWeather(null);
         } finally {
           setLoading(false);
         }
       },
       () => {
         setError("Location permission denied.");
+        setLoading(false);
       }
     );
-  }, []);
+  }, []); // This runs once on component mount
 
-  // Search weather by city
-  const fetchWeather = async () => {
-    if (!city.trim()) {
+  // Fetch weather for a searched city
+  const fetchWeather = async (cityName) => {
+    if (!cityName.trim()) {
       setError("Please enter a city name.");
-      setWeather(null);
       return;
     }
+    setError(""); // Reset error
+    setLoading(true); // Show loading
 
     try {
-      setLoading(true);
-      setError("");
-      const response = await axios.get(
-        `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${API_KEY}`
+      // Fetch current weather based on city name
+      const currentWeatherResponse = await axios.get(
+        `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&units=metric&appid=${API_KEY}`
       );
-      setWeather(response.data);
-
-      // Update recent searches
-      setRecentSearches((prev) => {
-        const updated = [city, ...prev.filter((c) => c !== city)];
-        return updated.slice(0, 5); // Keep only latest 5
-      });
+      setCurrentWeather(currentWeatherResponse.data);
+      setIsSearchedCity(true); // Set the flag to true as this is a searched city
     } catch (err) {
       setError("City not found. Please try again.");
-      setWeather(null);
+      setCurrentWeather(null);
     } finally {
-      setLoading(false);
+      setLoading(false); // Hide loading
     }
+  };
+
+  // Handle search input and fetch weather for city
+  const handleSearch = () => {
+    fetchWeather(city);
+  };
+
+  // Navigate to forecast page when button is clicked
+  const handleForecastRedirect = () => {
+    navigate(`/forecast/${city}`);
   };
 
   return (
@@ -87,42 +86,49 @@ const HomePage = () => {
           placeholder="Enter city name"
           value={city}
           onChange={(e) => setCity(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter" && fetchWeather()}
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()}
           className="flex-1 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
         <button
-          onClick={fetchWeather}
+          onClick={handleSearch}
           className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600"
         >
           Search
         </button>
       </div>
 
-      {/* Feedback */}
       {error && <p className="text-red-500 mb-4">{error}</p>}
       {loading && <p className="text-blue-500 mb-4">Loading...</p>}
 
-      {/* Weather Display */}
-      {weather && !loading && <WeatherDisplay weather={weather} />}
+      {/* Display Current Weather */}
+      {currentWeather && !loading && (
+        <div className="bg-white p-6 rounded-lg shadow-md text-center w-full max-w-md">
+          <h2 className="text-xl font-semibold">
+            {currentWeather.name}, {currentWeather.sys.country}
+          </h2>
+          <p className="text-gray-600 capitalize">
+            {currentWeather.weather[0].description}
+          </p>
+          <img
+            src={`https://openweathermap.org/img/wn/${currentWeather.weather[0].icon}@2x.png`}
+            alt="Weather Icon"
+            className="mx-auto"
+          />
+          <p className="text-lg font-bold">{currentWeather.main.temp}°C</p>
+          <p>Humidity: {currentWeather.main.humidity}%</p>
+          <p>Wind Speed: {currentWeather.wind.speed} m/s</p>
 
-      {/* Recent Searches */}
-      {recentSearches.length > 0 && (
-        <div className="mt-6 bg-white p-4 rounded-md shadow w-full max-w-md">
-          <h3 className="font-semibold mb-2 text-lg">Recent Searches</h3>
-          <ul className="list-disc list-inside text-gray-700">
-            {recentSearches.map((item, index) => (
-              <li
-                key={index}
-                className="cursor-pointer hover:text-blue-600"
-                onClick={() => {
-                  setCity(item);
-                  fetchWeather();
-                }}
+          {/* Button to redirect to ForecastPage (only for searched city) */}
+          {isSearchedCity && (
+            <div className="mt-4">
+              <button
+                onClick={handleForecastRedirect}
+                className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600"
               >
-                {item}
-              </li>
-            ))}
-          </ul>
+                View 5-Day Forecast
+              </button>
+            </div>
+          )}
         </div>
       )}
     </div>

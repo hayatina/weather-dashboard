@@ -4,9 +4,11 @@ import Footer from "./component/Footer";
 import HomePage from "./component/HomePage";
 import Header from "./component/Header";
 import WeatherDisplay from "./component/WeatherDisplay";
+import ForecastPage from "./component/ForecastPage";
 import WelcomePage from "./component/Welcomepage"; 
 import AboutPage from "./pages/AboutPage";  
 import ContactPage from "./pages/ContactPage";
+
 import "./index.css";
 
 function App() {
@@ -27,8 +29,8 @@ function App() {
         <Routes>
           <Route path="/" element={<WelcomePage />} />
           <Route path="/home" element={<HomePage />} />
-          <Route path="/weather/:city" element={<WeatherDisplay />} />
-          <Route path="/about" element={<AboutPage />} /> 
+          <Route path="/forecast/:city" element={<ForecastPage />} />
+          <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
         </Routes>
       </div>
