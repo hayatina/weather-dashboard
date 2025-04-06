@@ -36,8 +36,8 @@ const ForecastPage = () => {
         5-Day Forecast for {city}
       </h1>
 
-      {/* Forecast List */}
-      <div className="w-full max-w-lg space-y-4">
+      {/* Forecast Grid */}
+      <div className="w-full max-w-screen-lg grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
         {forecastData?.list.slice(0, 5).map((forecast, index) => (
           <div
             key={index}
