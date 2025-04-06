@@ -1,12 +1,89 @@
-# React + Vite
+🌤️ Weather Dashboard
+A responsive and feature-rich Weather Dashboard built with React, Tailwind CSS, and the OpenWeatherMap API. The app allows users to search for any city's weather, view real-time data for their current location, and enjoy additional features like recent searches, dark mode, and auto-updating weather conditions.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+🚀 Features
+🌍 Geolocation Support – Automatically detects and displays weather for your current location.
 
-Currently, two official plugins are available:
+🔎 Search Functionality – Search any city to view real-time weather information.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+🌡️ Weather Data Display – View temperature, humidity, wind speed, and weather icons.
 
-## Expanding the ESLint configuration
+♻️ Real-Time Updates – Automatic weather updates every few minutes + manual refresh.
 
-If you are developing a production application, we recommend using TypeScript and enable type-aware lint rules. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+🌘 Dark Mode – Toggle between light and dark themes.
+
+📁 Recent Searches – Stores recent cities using local storage.
+
+🌐 Internationalization (Stretch goal) – Supports multiple languages.
+
+📱 Responsive Design – Optimized for all screen sizes using Tailwind CSS.
+
+⚠️ Error Handling – Handles invalid city names and network issues with user-friendly messages.
+
+🛠️ Tech Stack
+Frontend: React, JSX, Tailwind CSS
+
+API: OpenWeatherMap API
+
+HTTP Client: Axios
+
+Deployment: Netlify / Vercel
+
+📁 Project Structure
+
+src/
+│
+├── components/
+│   ├── Header.jsx         # Navigation header
+│   ├── Footer.jsx         # Footer with credits
+|   ├── WelcomePage.jsx    # Intro page with project description
+|   ├── HomePage.jsx       # Main dashboard for current/search weather
+│   ├── ForecastPage.jsx   # Displays weather data of five days
+
+│
+├── pages/
+│   ├── AboutPage.jsx      # description about the web
+│   ├── ContactPage.jsx    # To take review and feedback
+│
+├── App.jsx                # Main app component with routing
+├── index.css              # Tailwind CSS styles
+└── main.jsx               # React app entry point
+
+🔧 Installation & Setup
+
+Clone the repository using git clone https://github.com/hayatina/Last-alx-project.git.
+
+  - Navigate to the project folder with cd Last-alx-project.
+
+  - Install the dependencies by running npm install.
+
+  - add your OpenWeatherMap API key like this:- const API_KEY = "92d49189cb2b878e0610a8be7afa97da"; 
+
+Start the development server with npm run dev.
+
+The app will run locally in your browser, usually at http://localhost:5173.
+
+    🧠 Future Improvements
+
+⛅ 7-day weather forecast view
+
+🗺️ Interactive weather map
+
+🧪 Unit & integration testing
+
+🌍 Multi-language support
+
+
+🛠️ Built With
+- React
+
+- Tailwind CSS
+
+- Axios
+
+- OpenWeatherMap API
+
+- Vite
+
+📜 License
+This project is licensed under the MIT License.
