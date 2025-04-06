@@ -10,7 +10,7 @@ const HomePage = () => {
   const [loading, setLoading] = useState(false);
   const [recentSearches, setRecentSearches] = useState([]);
 
-  const API_KEY = "YOUR_OPENWEATHERMAP_API_KEY"; // Replace with your key
+  const API_KEY = "92d49189cb2b878e0610a8be7afa97da"; // Replace with your key
 
   // Load recent searches from localStorage on mount
   useEffect(() => {
