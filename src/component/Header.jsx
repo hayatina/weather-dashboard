@@ -16,9 +16,9 @@ const Header = ({ darkMode, setDarkMode }) => {
         <nav className="flex items-center justify-between w-full">
           {/* Links for Large Screens */}
           <div className={`hidden md:flex space-x-6 md:space-x-10 ml-auto`}>
-            <Link to="/" className="hover:text-gray-300">
+            {/* <Link to="/" className="hover:text-gray-300">
               Welcome
-            </Link>
+            </Link> */}
             <Link to="/home" className="hover:text-gray-300">
               Home
             </Link>

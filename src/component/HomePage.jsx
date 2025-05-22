@@ -10,7 +10,7 @@ const HomePage = () => {
   const [isSearchedCity, setIsSearchedCity] = useState(false); // Flag to track if the weather is for searched city
 
   const navigate = useNavigate(); // Navigation hook
-  const API_KEY = "92d49189cb2b878e0610a8be7afa97da"; // Your OpenWeather API Key
+  const API_KEY = "92d49189cb2b878e0610a8be7afa97da"; 
 
   // Fetch current weather for user's location
   useEffect(() => {
